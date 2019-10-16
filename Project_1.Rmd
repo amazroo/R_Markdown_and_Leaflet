@@ -1,0 +1,71 @@
+---
+title: "Global assessment of evapotranspiration impacted by anthropogenic land cover changes"
+author: Amir Mazrooei
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: html_document
+---
+
+```{r, eval=TRUE, echo=FALSE}
+setwd("E:/Google Drive/NCSU-laptop sharing/Courses/Coursera_data_science/Developing Data Products/Assignment_1")
+Path_usefulGIS = "E:/Google Drive/NCSU-laptop sharing/Research/GIS/useful shapefiles"
+Path_ETdata = "E:/Google Drive/NCSU-laptop sharing/Research/POWELL CENTER/Data/ET_LC/ET_US_ClimateDivs/MAP_animation/Tables"
+filename = paste(Path_ETdata,"/DeltaET_",toString(2005),sprintf('%02d',8), ".txt", sep="")
+```
+
+### Introduction
+Evapotranspiration (ET) is a critical process of the climate system because it addresses the interconnections between both water-energy and land-atmosphere cycles. Over the past decades, global evapotranspiration conditions have been changed due to alterations in land use and land cover and changes to the climate system. The objective of this study is to explore and assess the sensitivity of global evapotranspiration and potential evapotranspiration (PET) to such changes over the past decades. Regions of altered land use and land cover (e.g. urbanization, deforestation, developing agricultural areas, etc.) are identified from MODIS satellite observations in 1km resolution and are grouped in different climatic regimes based on seasonal-to-annual precipitation and temperature characteristics. Following this, remotely sensed and modeled annual mean ET and PET variables are estimated and compared during prior and subsequent periods of human-induced land cover changes in order to determine the exerted influence of human impacts.
+
+```{r, message= FALSE, warning= FALSE, fig.width=9.5, fig.height=8, echo=FALSE}
+library(leaflet)
+library(rgdal)
+library(maptools)
+library(plyr)
+layer = readOGR(Path_usefulGIS, "US_Climate_Divisions_GCS_NAD_1983", verbose = FALSE)
+    layer@data$FID <- seq(0,358)
+    layer@data$id <- rownames(layer@data)
+    DeltaET.data <- read.csv(filename, header=TRUE, sep=",")
+    layer@data <- join(layer@data, DeltaET.data, by="FID")
+bins <- seq(-60,60,10)
+pal <- colorBin("PiYG", domain = layer@data$test, bins = bins)
+
+labels <- sprintf(
+  "<strong>%s</strong><br/> %s %g [mm/month]",
+  paste(layer@data$NAME,layer@data$ST, sep = ", "),"&Delta;ET=", layer@data$test
+) %>% lapply(htmltools::HTML)
+
+leaflet(layer) %>% addTiles() %>%
+  addPolygons(fillColor = ~pal(test), color = "gray", weight = 0.6, smoothFactor = 0.5, opacity = 1, dashArray = "3", fillOpacity = .71,
+    highlightOptions = highlightOptions(color = "white", weight = 2,
+    bringToFront = TRUE), label=labels, 
+    labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "15px", direction = "auto")) %>% 
+  addLegend(pal = pal, values = ~layer@data$test, opacity = .71, title = "&Delta;ET [mm/month]</br> 2005 Aug", position = "bottomright")
+```
+
+```{r, message= FALSE, warning= FALSE, fig.width=9.5, fig.height=8, eval=FALSE}
+# R Code used to create the map
+library(leaflet)
+library(rgdal)
+library(maptools)
+library(plyr)
+layer = readOGR(Path_usefulGIS, "US_Climate_Divisions_GCS_NAD_1983", verbose = FALSE)
+    layer@data$FID <- seq(0,358)
+    layer@data$id <- rownames(layer@data)
+    DeltaET.data <- read.csv(filename, header=TRUE, sep=",")
+    layer@data <- join(layer@data, DeltaET.data, by="FID")
+bins <- seq(-60,60,10)
+pal <- colorBin("PiYG", domain = layer@data$test, bins = bins)
+
+labels <- sprintf(
+  "<strong>%s</strong><br/> %s %g [mm/month]",
+  paste(layer@data$NAME,layer@data$ST, sep = ", "),"&Delta;ET=", layer@data$test
+) %>% lapply(htmltools::HTML)
+
+leaflet(layer) %>% addTiles() %>%
+  addPolygons(fillColor = ~pal(test), color = "gray", weight = 0.6, smoothFactor = 0.5, opacity = 1, dashArray = "3", fillOpacity = .71,
+    highlightOptions = highlightOptions(color = "white", weight = 2,
+    bringToFront = TRUE), label=labels, 
+    labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "15px", direction = "auto")) %>% 
+  addLegend(pal = pal, values = ~layer@data$test, opacity = .71, title = "&Delta;ET [mm/month]</br> 2005 Aug", position = "bottomright")
+```
