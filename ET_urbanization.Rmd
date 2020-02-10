@@ -1,6 +1,6 @@
 ---
 title: "Global assessment of evapotranspiration impacted by anthropogenic land cover changes"
-author: Amir Mazrooei
+author: Amir Mazrooei; Meredith Reitz; Dingbao Wang; Sankar Arumugam
 date: "`r format(Sys.time(), '%B %Y')`"
 output: html_document
 ---
