@@ -1,2 +1,2 @@
-### Access the webpage here:
-https://amazroo.github.io/Urbanization_and_ET/ET_urbanization.html
+### Access the interactive results here:
+https://amazroo.github.io/Urbanization_and_ET/UrbanizationET_results.html
