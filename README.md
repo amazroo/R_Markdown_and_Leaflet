@@ -1,7 +1,7 @@
 # Urbanization Impacts on Evapotranspiration Across Various Spatio-temporal Scales 
 **Amir Mazrooei, Meredith Reitz, Dingbao Wang, A. Sankarasubramanian**
 
-**Earth's Future; 2021 July | **[https://doi.org/10.1029/2021EF002045](https://doi.org/10.1029/2021EF002045)
+**Earth's Future; 2021 July |** [https://doi.org/10.1029/2021EF002045](https://doi.org/10.1029/2021EF002045)
 
 ### Interactive Results:
 [https://amazroo.github.io/Urbanization_and_ET/UrbanizationET_results.html](https://amazroo.github.io/Urbanization_and_ET/UrbanizationET_results.html)
